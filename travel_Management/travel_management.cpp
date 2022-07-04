@@ -1,348 +1,334 @@
 #include <iostream>
+#include <conio.h>
+#include <Stdio.h>
+#include <process.h>
 #include <fstream>
 #include <iomanip>
-#include <stdlib.h>
+#include <time.h>
+#include <cstdlib>
 #include <windows.h>
 using namespace std;
 
-void menu();       // main menu function prototype
-
-class ManageMenu
+void gotoxy(int x, int y)
 {
-protected:
-    string userName; // hide admin name
+    COORD coord;
+    coord.X = x;
+    coord.Y = y;
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+}
 
-public:
-    // virtual void menu(){}
-     
-    ManageMenu()
-    {
-        system("color 0A"); // change terminal color
-        cout << "\n\n\n\n\n\n\n\n\n\t  Enter Your Name to Continue as an Admin: ";
-        cin >> userName;
-        system("CLS");
-        menu(); // call to main function to load after executing the constructr
-    }
-
-     ~ManageMenu() {} // destructors
-};
-
-class Customer
+class student
 {
-public:
-    string name, gender, address;
-    int age, mobileNo, menuBack;
-    static int cusID;
-    char all[999];
-
-    void getDetails()
+    int rollno;
+    char name[50];
+    int p_marks, c_marks, m_marks, e_marks, cs_marks;
+    float per;
+    char grade;
+    int std;
+    void calculate()
     {
-        ofstream out("old-customers.txt", ios::app); // open file using append mode to write customer details
-        {
-            cout << "\nEnter Customer ID: ";
-            cin >> cusID;
-            cout << "Enter Name: ";
-            cin >> name;
-            cout << "Enter Age: ";
-            cin >> age;
-            cout << "Enter Mobile Number: ";
-            cin >> mobileNo;
-            cout << "Address: ";
-            cin >> address; 
-            cout << "Gender: ";
-            cin >> gender;
-        }
-        out << "\nCustomer ID: " << cusID << "\nName: " << name << "\nAge: " << age << "\nMobile Number: " << mobileNo << "\nAddress: " << address << "\nGender: " << gender << endl;
-        out.close();
-        cout << "\nSaved \nNOTE: We save your details record for future purposes.\n"
-             << endl;
-    }
-    void showDetails() // function to show old customer records
-    {
-        ifstream in("old-customers.txt");
-        {
-            if (!in)
-            {
-                cout << "File Error!" << endl;
-            }
-            while (!(in.eof()))
-            {
-                in.getline(all, 999);
-                cout << all << endl;
-            }
-            in.close();
-        }
-    }
-};
-
-int Customer::cusID;
-
-class Cabs
-{
-public:
-    int cabChoice;
-    int kilometers;
-    float cabCost;
-    static float lastCabCost;
-   
-    void cabDetails()
-    {
-        cout << "We collaborated with fastest, safest, and smartest cab service arround the country" << endl;
-        cout << "-----------ABC Cabs-----------\n"
-             << endl;
-        cout << "1. Rent a Standard Cab - Rs.15 for 1KM" << endl;
-        cout << "2. Rent a Luxury Cab - Rs.25 per 1KM" << endl;
-
-        cout << "\nEnter another key to back or," << endl;
-
-        cout << "Enter which kind of cab you need: ";
-        cin >> cabChoice;
-        cout << "Enter Kilometers you have to travel: ";
-        cin >> kilometers;
-        cout << "\nTo calculate the cost for your journey.." << endl;
-            
-        int hireCab;
-
-        if (cabChoice == 1)
-        {
-            cabCost = kilometers * 15;
-            cout << "\nYour tour will cost " << cabCost << " rupees for a standard cab" << endl;
-            cout << "Press 1 to hire this cab: or ";
-            cout << "Press 2 to select another cab: ";
-            cin >> hireCab;
-            system("CLS");
-            if (hireCab == 1)
-            {
-                lastCabCost = cabCost;
-                cout << "\nYou have successfully hired standard cab" << endl;
-                cout << "Goto Menu to take the receipt" << endl;
-            }
-            else if (hireCab == 2)
-            {
-                cabDetails();
-            }
-            else
-            {
-                cout << "Invalid Input! Redirecting to Previous Menu \nPlease Wait!" << endl;
-                Sleep(1000);
-                system("CLS");
-                cabDetails();
-            }
-        }
-        else if (cabChoice == 2)
-        {
-            cabCost = kilometers * 25;
-            cout << "\nYour tour will cost " << cabCost << " rupees for a luxury cab" << endl;
-            cout << "Press 1 to hire this cab: or ";
-            cout << "Press 2 to select another cab: ";
-            cin >> hireCab;
-            system("CLS");
-            if (hireCab == 1)
-            {
-                lastCabCost = cabCost;
-                cout << "\nYou have successfully hired luxury cab" << endl;
-                cout << "Goto Menu to take the receipt" << endl;
-            }
-            else if (hireCab == 2)
-            {
-                cabDetails();
-            }
-            else
-            {
-                cout << "Invalid Input! Redirecting to Previous Menu \nPlease Wait!" << endl;
-                 Sleep(1000);
-                system("CLS");
-                cabDetails();
-            }
-        }
+        per=(p_marks+c_marks+m_marks+e_marks+cs_marks)/5.0;
+        if(per>=60)
+            grade = 'A';
+        else if(per>=50 && per<60)
+            grade = 'B';
+        else if(per>=33 && per<50)
+            grade = 'C';
         else
-        {
-            cout << "Invalid Input! Redirecting to Previous Menu \nPlease Wait!" << endl;
-            Sleep(1000);
-            system("CLS");
-            menu();
-        }
+            grade = 'F';
+    }
+public:
+    void getdata()
+    {
+        cout<<"\nEnter the roll number of student ";
+        cin>>rollno;
+        cout<<"\nEnter the Name of the Student ";
+        cin>>name;
+        cout<<"\nEnter the marks in physics out of 100: ";
+        cin>>p_marks;
+        cout<<"\nEnter the marks in chemistry out of 100: ";
+        cin>>c_marks;
+        cout<<"\nEnter the marks in mathematics out of 100: ";
+        cin>>m_marks;
+        cout<<"\nEnter the marks in english out of 100: ";
+        cin>>e_marks;
+        cout<<"\nEnter the marks in computer science out of 100: ";
+        cin>>cs_marks;
+        calculate();
+    }
 
-        cout << "\nPress 1 to Redirect Main Menu: ";
-        cin >> hireCab;
-        system("CLS");
-        if (hireCab == 1)
-        {
-            menu();
-        }
-        else
-        {
-            menu();
-        }
+    void showdata()
+    {
+        cout<<"\nRoll number of student: "<<rollno;
+        cout<<"\nName of student: "<<name;
+        cout<<"\nMarks in physics: "<<p_marks<<"  ";
+        cout<<"\nMarks in chemistry: "<<c_marks;
+        cout<<"\nMarks in mathematics: "<<m_marks;
+        cout<<"\nMarks in english: "<<e_marks;
+        cout<<"\nMarks in computer science: "<<cs_marks;
+        cout<<"\nPercentage of student is: "<<setprecision(2)<<per;
+        cout<<"\nGrade of student is: "<<grade;
+    }
+
+    void show_tabular()
+    {
+        cout<<rollno<<setw(12)<<name<<setw(10)<<p_marks<<setw(3)<<c_marks<<setw(3)
+        <<m_marks<<setw(3)<<e_marks<<setw(3)<<cs_marks<<setw(6)<<setprecision(3)<<per<<"   "<<grade<<endl;
+    }
+    int retrollno()
+    {
+        return rollno;
     }
 };
 
-float Cabs::lastCabCost;
+fstream fp;
+student st;
 
-class Chargers : public Cabs, Customer // Multiple Inheritance of some other classes to Chargers
+void write_student()
 {
+    fp.open("students.dat", ios::out|ios::app);
+    st.getdata();
+    fp.write((char*)&st,sizeof(student));
+    fp.close();
+    cout<<"\n\nStudent record has been created";
+    _getch();
 
-public:
-    void printBill()
-    {
-        ofstream outf("receipt.txt"); // receipt for bought items
-        {
-            outf << "--------ABC Travel Agency--------" << endl;
-            outf << "-------------Receipt-------------" << endl;
-            outf << "_________________________________" << endl;
+}
 
-            outf << "Customer ID: " << Customer::cusID << endl
-                 << endl;
-            outf << "User Name:" << Customer::name << endl
-                 << endl;
-            outf << "Description\t\t Total" << endl;
-            outf << "Travel (cab) cost:\t " << fixed << setprecision(2) << Cabs::lastCabCost << endl;
-
-            outf << "_________________________________" << endl;
-            outf << "Total Charge:\t\t " << fixed << setprecision(2) << Cabs::lastCabCost << endl;
-            outf << "_________________________________" << endl;
-            outf << "------------THANK YOU------------" << endl;
-        }
-        outf.close();
-        // cout << "Your receipt printed, please get it from the file saved path:D" << endl;
-    }
-    void showBill()
-    {
-        ifstream inf("receipt.txt");
-        {
-            if (!inf)
-            {
-                cout << "File Error!" << endl;
-            }
-            while (!(inf.eof()))
-            {
-                inf.getline(all, 999);
-                cout << all << endl;
-            }
-        }
-        inf.close();
-    }
-};
-
-void menu() // menu function contain main menu
+void display_all()
 {
-
-    int mainChoice;
-    int inChoice;
-    int gotoMenu;
-    cout << "\t\t      * ABC Travels *\n"
-         << endl;
-    cout << "-------------------------Main Menu--------------------------" << endl;
-    cout << "\t _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ " << endl;
-    cout << "\t|\t\t\t\t\t|" << endl;
-    //  cout << "\t|\tAgency System Management -> 0" << endl;
-    cout << "\t|\tCustomer Management -> 1\t|" << endl;
-    cout << "\t|\tCabs Management     -> 2\t|" << endl;
-    cout << "\t|\tCharges & Bill      -> 3\t|" << endl;
-    cout << "\t|\tExit                -> 4\t|" << endl;
-    cout << "\t|\t\t\t\t\t|" << endl;
-    cout << "\t|_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _|" << endl;
-
-    cout << "\nEnter Choice: ";
-    cin >> mainChoice;
-
-    system("CLS");
-
-    Customer a2; // creating objects
-    Cabs a3;
-    Chargers a4;
-
-    if (mainChoice == 1)
+    system("cls");
+    cout<<"\n\n\n\t\tDISPLAY ALL RECORD !!!\n\n";
+    fp.open("students.dat", ios::in);
+    while(fp.read((char*)&st,sizeof(student)))
     {
-        cout << "------Customers------\n"
-             << endl;
-        cout << "1. Enter New Customer" << endl;
-        cout << "2. See Old Customers" << endl;
+        st.showdata();
+        cout<<"\n\n========================================================\n";
+        _getch();
+    }
+    fp.close();
+    _getch();
+}
 
-        cout << "\nEnter choice: ";
-        cin >> inChoice;
-
-        system("CLS");
-        if (inChoice == 1)
+void display_sp(int n)
+{
+    int flag=0;
+    fp.open("students.dat",ios::in);
+    while(fp.read((char*)&st,sizeof(student)))
+    {
+        if(st.retrollno()==n)
         {
-            a2.getDetails();
-        }
-        else if (inChoice == 2)
-        {
-            a2.showDetails();
-        }
-        else
-        {
-            cout << "Invalid Input! Redirecting to Previous Menu \nPlease Wait!" << endl;
-            Sleep(100);
-            system("CLS");
-            menu();
-        }
-        cout << "Press 1 to Redirect Main Menu: ";
-        cin >> gotoMenu;
-        system("CLS");
-        if (gotoMenu == 1)
-        {
-            menu();
-        }
-        else
-        {
-            menu();
+            system("cls");
+            st.showdata();
+            flag=1;
         }
     }
-    else if (mainChoice == 2)
+    fp.close();
+    if(flag==0)
+        cout<<"\n\nRecord does not exist";
+    _getch();
+}
+
+void modify_student()
+{
+    int no, found=0;
+    system("cls");
+    cout<<"\n\nTo Modify ";
+    cout<<"\n\n\tPlease Enter the roll number of student";
+    cin>>no;
+    fp.open("students.dat",ios::in|ios::out);
+    while(fp.read((char*)&st,sizeof(student)) && found ==0)
     {
-        a3.cabDetails();
-    }
-    else if (mainChoice == 3)
-    {
-        cout << "-->Get your receipt<--\n"
-             << endl;
-        a4.printBill();
-        cout << "Your receipt is already printed you can get it from file path\n"
-             << endl;
-        cout << "to display the your receipt in the screen, Enter 1: or Enter another key to back main menu: ";
-        cin >> gotoMenu;
-        if (gotoMenu == 1)
+        if(st.retrollno() == no)
         {
-            system("CLS");
-            a4.showBill();
-            cout << "Press 1 to Redirect Main Menu: ";
-            cin >> gotoMenu;
-            system("CLS");
-            if (gotoMenu == 1)
-            {
-                menu();
-            }
-            else
-            {
-                menu();
-            }
-        }
-        else
-        {
-            system("CLS");
-            menu();
+            st.showdata();
+            cout<<"\nPlease Enter the New details of student"<<endl;
+            st.getdata();
+            int pos=-1*sizeof(st);
+            fp.seekp(pos,ios::cur);
+            fp.write((char*)&st,sizeof(student));
+            cout<<"\n\n\t Record updated";
+            found=1;
         }
     }
-    else if (mainChoice == 4)
+    fp.close();
+    if(found==0)
+        cout<<"\n\nRecord not found";
+    _getch();
+}
+
+void delete_student()
+{
+    int no;
+    system("cls");
+    cout<<"\n\n\nDelete Record";
+    cout<<"\n\nPlease Enter the roll number of student you want to delete";
+    cin>>no;
+    fp.open("students.dat",ios::in|ios::out);
+    fstream fp2;
+    fp2.open("Temp.dat",ios::out);
+    fp.seekg(0,ios::beg);
+    while(fp.read((char*)&st,sizeof(student)))
     {
-        cout << "\n\n\t--GOOD-BYE!--" << endl;
-        Sleep(1000);
-        system("CLS");
-        ManageMenu();
+        if(st.retrollno()!=no)
+        {
+            fp2.write((char*)&st,sizeof(student));
+        }
     }
-    else
+    fp2.close();
+    fp.close();
+    remove("students.dat");
+    rename("Temp.dat","students.dat");
+    cout<<"\n\n\tRecord Deleted!...";
+    _getch();
+}
+
+void class_result()
+{
+    system("cls");
+    fp.open("students.dat",ios::in);
+    if(!fp)
     {
-        cout << "Invalid Input! Redirecting to Previous Menu \nPlease Wait!" << endl;
-        Sleep(1000);
-        system("CLS");
-        menu();
+        cout<<"ERROR!!! FILE COULD NOT BE OPEN\n\n\n Go to Entry menu to create file";
+        cout<<"\n\n\n Program is closing........";
+        _getch();
+        exit(0);
+    }
+    cout<<"\n\n\t\tALL STUDENTS RESULT \n\n";
+    cout<<"============================================================================\n";
+    cout<<"Roll no.  Name                                   P  C  M  E  CS  %age Grade\n ";
+    cout<<"============================================================================\n";
+
+    while(fp.read((char*)&st,sizeof(student)))
+    {
+        st.show_tabular();
+    }
+    fp.close();
+    _getch();
+
+}
+
+void result()
+{
+    int ans,rno;
+    char ch;
+    system("cls");
+    cout<<"\n\n\nRESULT MENU";
+    cout<<"\n\n\n1. Class Result\n\n2. Student Report Card\n\n3. Back to Main Menu";
+    cout<<"\n\n\nEnter Choice (1/2)? ";
+    cin>>ans;
+    switch(ans)
+    {
+    case 1:
+        class_result();
+        break;
+    case 2:
+        {
+
+        do
+        {
+            system("cls");
+            char ans;
+            cout<<"\n\nEnter Roll Number of Student: ";
+            cin>>rno;
+            display_sp(rno);
+            cout<<"\n\nDo you want to See more result (y/n)? ";
+            cin>>ans;
+        }
+        while(ans=='y'||ans=='Y');
+        break;
+    }
+    case 3:
+        break;
+    default:
+        cout<<"\a";
+    }
+}
+
+void intro()
+{
+    system("cls");
+    gotoxy(35,11);
+    cout<<"STUDENT";
+    gotoxy(33,14);
+    cout<<"REPORT CARD";
+    gotoxy(35, 17);
+    cout<<"Press Enter !";
+    gotoxy(35, 17);
+
+    _getch();
+}
+
+void entry_menu()
+{
+    system("cls");
+    char ch2;
+    cout<<"\n\n\n\tENTRY MENU";
+    cout<<"\n\n\n\t1. CREATE STUDENT RECORD";
+    cout<<"\n\n\n\t2. DISPLAY ALL STUDENTS RECORDS";
+    cout<<"\n\n\n\t3. SEARCH STUDENT RECORD";
+    cout<<"\n\n\n\t4. MODIFY STUDENT RECORD";
+    cout<<"\n\n\n\t5. DELETE STUDENT RECORD";
+    cout<<"\n\n\n\t6. BACK TO MAIN MENU";
+    cout<<"\n\n\n\tPlease Enter Your Choice(1-6) ";
+    ch2=getche();
+    switch(ch2)
+    {
+    case '1':
+        system("cls");
+        write_student();
+        break;
+    case '2':
+        display_all();
+        break;
+    case '3':
+        int num;
+        system("cls");
+        cout<<"\n\n\tPlease Enter roll number: ";
+        cin>>num;
+        display_sp(num);
+        break;
+    case '4':
+        modify_student();
+        break;
+    case '5':
+        delete_student();
+        break;
+    case '6':
+        break;
+    default:
+        cout<<"\a";
+        entry_menu();
     }
 }
 
 int main()
 {
-    ManageMenu startObj;
-    return 0;
+    char ch;
+    intro();
+    do
+    {
+        system("cls");
+        cout<<"\n\n\n\tMAIN MENU";
+        cout<<"\n\n\n\t1. RESULT MENU";
+        cout<<"\n\n\n\t2. ENTRY/EDIT MENU";
+        cout<<"\n\n\n\t3. EXIT";
+        cout<<"\n\n\n\tPlease select your option (1-3)  ";
+        ch=getche();
+        switch(ch)
+        {
+        case '1':
+            system("cls");
+            result();
+            break;
+        case '2':
+            entry_menu();
+            break;
+        case '3':
+            exit(0);
+        default:
+            cout<<"\a";
+        }
+    }
+    while(ch!='3');
 }
